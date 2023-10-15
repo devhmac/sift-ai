@@ -1,5 +1,8 @@
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
+import { buttonVariants } from "./ui/button";
+import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs/server";
+import { ArrowRightCircle } from "lucide-react";
 
 const Navbar = () => {
   return (
@@ -9,6 +12,35 @@ const Navbar = () => {
           <Link href="/" className=" flex z-40 font-semibold">
             .sift
           </Link>
+          <div className="hidden items-center space-x-4 sm:flex">
+            <>
+              <Link
+                href="/pricing"
+                className={buttonVariants({
+                  variant: "ghost",
+                  size: "sm",
+                })}
+              >
+                Pricing
+              </Link>
+              <LoginLink
+                className={buttonVariants({
+                  variant: "ghost",
+                  size: "sm",
+                })}
+              >
+                Login
+              </LoginLink>
+              <RegisterLink
+                className={buttonVariants({
+                  size: "sm",
+                  className: "bg-green-600",
+                })}
+              >
+                Sign Up <ArrowRightCircle className="ml-1.5 h-4.5 w-4.5" />
+              </RegisterLink>
+            </>
+          </div>
         </div>
       </MaxWidthWrapper>
     </nav>
