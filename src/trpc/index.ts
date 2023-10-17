@@ -1,5 +1,5 @@
 import { router } from "./trpc";
-const appRouter = router({
+export const appRouter = router({
   // ...
 });
 // Export type router type signature,
