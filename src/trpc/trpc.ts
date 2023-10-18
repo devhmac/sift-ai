@@ -10,3 +10,4 @@ const t = initTRPC.create();
  */
 export const router = t.router;
 export const publicProcedure = t.procedure;
+// public proceedure = public api route
