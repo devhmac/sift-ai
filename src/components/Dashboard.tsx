@@ -3,6 +3,7 @@ import { Ghost } from "lucide-react";
 import { Button } from "./ui/button";
 import UploadButton from "./UploadButton";
 import { trpc } from "@/app/_trpc/client";
+import Skeleton from "react-loading-skeleton";
 
 const Dashboard = () => {
   const { data: files, isLoading } = trpc.getUserFiles.useQuery(); //this is client side util
@@ -15,9 +16,22 @@ const Dashboard = () => {
       </div>
       {/* display files */}
       {files && files?.length !== 0 ? (
-        <div></div>
+        <ul className="mt-8 grid grid-cols-1 gap-6 divide-y divide-zinc-200 md:grid-cols-2 lg:grid-cols-3">
+          {files
+            .sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )
+            .map((file) => (
+              <li
+                key={file.id}
+                className="col-span-1 divide-y divide-gray-200 rounded-gl bg-white shadow transition hover:shadow-lg"
+              ></li>
+            ))}
+        </ul>
       ) : isLoading ? (
-        <div></div>
+        <Skeleton height={100} className="my-2" count={3} />
       ) : (
         <div className="mt-16 flex flex-col items-center gap-2">
           <Ghost className="h-8 w-8 text-zinc-800" />
