@@ -4,6 +4,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { publicProcedure, privateProcedure, router } from "./trpc";
 import { TRPCError } from "@trpc/server";
 import { db } from "@/db";
+import { z } from "zod";
 
 export const appRouter = router({
   //can do querys (generally get requests etc) and mutations (posts etc)
@@ -37,6 +38,31 @@ export const appRouter = router({
       where: { userId },
     });
   }),
+
+  //delete file route ------------------------------
+  deleteFile: privateProcedure
+    .input(z.object({ id: z.string() })) //this zod function makes the input typesafe
+    .mutation(async ({ ctx, input }) => {
+      //gets input from the input function above
+      const { userId, user } = ctx;
+      //find file
+      const file = await db.file.findFirst({
+        where: {
+          id: input.id,
+          userId,
+        },
+      });
+
+      if (!file) throw new TRPCError({ code: "NOT_FOUND" });
+
+      await db.file.delete({
+        where: {
+          id: input.id,
+          userId,
+        },
+      });
+      return file;
+    }),
 });
 // Export type router type signature,
 // NOT the router itself.
