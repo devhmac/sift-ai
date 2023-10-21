@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import UploadButton from "./UploadButton";
 import { trpc } from "@/app/_trpc/client";
 import Skeleton from "react-loading-skeleton";
+import Link from "next/link";
 
 const Dashboard = () => {
   const { data: files, isLoading } = trpc.getUserFiles.useQuery(); //this is client side util
@@ -27,7 +28,17 @@ const Dashboard = () => {
               <li
                 key={file.id}
                 className="col-span-1 divide-y divide-gray-200 rounded-gl bg-white shadow transition hover:shadow-lg"
-              ></li>
+              >
+                <Link
+                  href={`/dashboard/${file.id}`}
+                  className="flex flex-col gap-2"
+                >
+                  <div className="pt-6 px-6 flex w-full items-center justify-between space-x-6">
+                    <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" />
+                    <div className=""></div>
+                  </div>
+                </Link>
+              </li>
             ))}
         </ul>
       ) : isLoading ? (
