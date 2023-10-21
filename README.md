@@ -43,7 +43,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - Shadcn
   -tRPC
 
-  prisma
+  prisma - database wrapper
 
   - reg nextjs front and back split, fetch from front end sends request to backend, which will process, then send it back to us
 

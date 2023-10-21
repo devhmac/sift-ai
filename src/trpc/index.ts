@@ -1,7 +1,7 @@
 //routes go in here
 
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { publicProcedure, router } from "./trpc";
+import { publicProcedure, privateProcedure, router } from "./trpc";
 import { TRPCError } from "@trpc/server";
 import { db } from "@/db";
 
@@ -30,7 +30,13 @@ export const appRouter = router({
   }),
 
   //Get user files endpoint --------
-  getUserFiles,
+  getUserFiles: privateProcedure.query(async ({ ctx }) => {
+    const { user, userId } = ctx;
+
+    return await db.file.findMany({
+      where: { userId },
+    });
+  }),
 });
 // Export type router type signature,
 // NOT the router itself.
