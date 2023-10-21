@@ -9,6 +9,8 @@ import { format } from "date-fns";
 
 const Dashboard = () => {
   const { data: files, isLoading } = trpc.getUserFiles.useQuery(); //this is client side util
+  const { mutate: deleteFile } = trpc.deleteFile.useMutation();
+  //above is rename mutate syntax
 
   return (
     <main className="mx-auto mw-7xl md:p-10">
@@ -54,7 +56,12 @@ const Dashboard = () => {
                     <MessageSquare className="h-4 w-4" />
                     num messages
                   </div>
-                  <Button size="sm" className="" variant="destructive">
+                  <Button
+                    size="sm"
+                    className="w-full"
+                    variant="destructive"
+                    onClick={() => deleteFile({ id: file.id })}
+                  >
                     <TrashIcon className="h-4 w-4" />
                   </Button>
                 </div>
