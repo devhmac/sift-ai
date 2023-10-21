@@ -31,8 +31,9 @@ enum UploadStatus {
 }
 
 model File {
-  id           String       @id @default(cuid())
-  name         String
+  id   String @id @default(cuid())
+  name String
+
   uploadStatus UploadStatus @default(PENDING)
 
   url String
