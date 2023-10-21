@@ -43,6 +43,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - Shadcn
   -tRPC
 
+  prisma
+
   - reg nextjs front and back split, fetch from front end sends request to backend, which will process, then send it back to us
 
     - problem, in typescript the type will be "any", not typesafe, dont know what to expect at scale

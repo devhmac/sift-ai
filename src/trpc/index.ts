@@ -7,6 +7,8 @@ import { db } from "@/db";
 
 export const appRouter = router({
   //can do querys (generally get requests etc) and mutations (posts etc)
+
+  // AuthCallback route to verify or create user account ------- public proceedure, any user can hit this
   authCallback: publicProcedure.query(async () => {
     const { getUser } = getKindeServerSession();
     const user = getUser();
@@ -26,6 +28,9 @@ export const appRouter = router({
 
     return { success: true };
   }),
+
+  //Get user files endpoint --------
+  getUserFiles,
 });
 // Export type router type signature,
 // NOT the router itself.
