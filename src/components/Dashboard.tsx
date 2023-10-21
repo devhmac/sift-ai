@@ -1,5 +1,5 @@
 "use client";
-import { Ghost, MessageSquare, Plus } from "lucide-react";
+import { Ghost, MessageSquare, Plus, TrashIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import UploadButton from "./UploadButton";
 import { trpc } from "@/app/_trpc/client";
@@ -54,6 +54,9 @@ const Dashboard = () => {
                     <MessageSquare className="h-4 w-4" />
                     num messages
                   </div>
+                  <Button size="sm" className="" variant="destructive">
+                    <TrashIcon className="h-4 w-4" />
+                  </Button>
                 </div>
               </li>
             ))}
