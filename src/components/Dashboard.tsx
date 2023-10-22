@@ -1,15 +1,34 @@
 "use client";
-import { Ghost, MessageSquare, Plus, TrashIcon } from "lucide-react";
+import { Ghost, Loader2, MessageSquare, Plus, TrashIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import UploadButton from "./UploadButton";
 import { trpc } from "@/app/_trpc/client";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 import { format } from "date-fns";
+import { useState } from "react";
 
 const Dashboard = () => {
+  const [currentlyDeleting, setCurrentlyDeleting] = useState<string | null>(
+    null
+  );
+
+  const utils = trpc.useContext();
+
   const { data: files, isLoading } = trpc.getUserFiles.useQuery(); //this is client side util
-  const { mutate: deleteFile } = trpc.deleteFile.useMutation();
+
+  const { mutate: deleteFile } = trpc.deleteFile.useMutation({
+    onSuccess: () => {
+      //invalidates previous getUserFiles query forcing re-query
+      utils.getUserFiles.invalidate();
+    },
+    onMutate({ id }) {
+      setCurrentlyDeleting(id);
+    },
+    onSettled() {
+      setCurrentlyDeleting(null);
+    },
+  });
   //above is rename mutate syntax
 
   return (
@@ -27,6 +46,7 @@ const Dashboard = () => {
                 new Date(b.createdAt).getTime() -
                 new Date(a.createdAt).getTime()
             )
+            // mapping through all file list
             .map((file) => (
               <li
                 key={file.id}
@@ -62,7 +82,11 @@ const Dashboard = () => {
                     variant="destructive"
                     onClick={() => deleteFile({ id: file.id })}
                   >
-                    <TrashIcon className="h-4 w-4" />
+                    {currentlyDeleting === file.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <TrashIcon className="h-4 w-4" />
+                    )}
                   </Button>
                 </div>
               </li>
