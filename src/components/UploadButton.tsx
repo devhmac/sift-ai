@@ -5,13 +5,36 @@ import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Button } from "./ui/button";
 import Dropzone from "react-dropzone";
 import { Cloud, File } from "lucide-react";
+import { Progress } from "./ui/progress";
 
 const UploadDropzone = () => {
+  const [isUploading, setIsUploading] = useState<boolean | null>(true);
+  //determinate progress bar - dont have access to upload progress
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+
+  const startSimulatedProgress = () => {
+    setUploadProgress(0);
+    const interval = setInterval(() => {
+      setUploadProgress((prev) => {
+        if (prev >= 85) {
+          clearInterval(interval);
+          return prev;
+        }
+        return prev + 5;
+      });
+    }, 500);
+    return interval;
+  };
+
   return (
     <Dropzone
       multiple={false}
       onDrop={(acceptedFile) => {
-        console.log(acceptedFile);
+        // console.log(acceptedFile);
+        setIsUploading(true);
+        const progressInterval = startSimulatedProgress();
+        clearInterval(progressInterval);
+        setUploadProgress(100);
       }}
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (
@@ -40,6 +63,15 @@ const UploadDropzone = () => {
                   <div className="px-3 py-2 h-full text-sm truncate">
                     {acceptedFiles[0].name}
                   </div>
+                </div>
+              ) : null}
+
+              {isUploading ? (
+                <div className="w-full mt-4 max-w-xs mx-auto">
+                  <Progress
+                    value={uploadProgress}
+                    className="h-1 w-full bg-zinc-200"
+                  />
                 </div>
               ) : null}
             </label>
