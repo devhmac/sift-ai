@@ -33,6 +33,8 @@ const UploadDropzone = () => {
         // console.log(acceptedFile);
         setIsUploading(true);
         const progressInterval = startSimulatedProgress();
+        // file uploading logic
+
         clearInterval(progressInterval);
         setUploadProgress(100);
       }}
