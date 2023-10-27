@@ -9,8 +9,12 @@ import { Progress } from "./ui/progress";
 import { useUploadThing } from "@/lib/uploadthing";
 import { Toaster } from "./ui/toaster";
 import { useToast } from "./ui/use-toast";
+import { trpc } from "@/app/_trpc/client";
+import { useRouter } from "next/navigation";
 
 const UploadDropzone = () => {
+  const router = useRouter();
+
   const [isUploading, setIsUploading] = useState<boolean | null>(true);
   //determinate progress bar - dont have access to upload progress
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -18,6 +22,14 @@ const UploadDropzone = () => {
   const { startUpload } = useUploadThing("pdfUploader");
 
   const { toast } = useToast();
+
+  const { mutate: startPolling } = trpc.getFile.useMutation({
+    onSuccess: (file) => {
+      router.push(`/dashboard/${file.id}`);
+    },
+    retry: true,
+    retryDelay: 500,
+  });
 
   const startSimulatedProgress = () => {
     setUploadProgress(0);
@@ -66,6 +78,8 @@ const UploadDropzone = () => {
         //poll to confirm file upload
         clearInterval(progressInterval);
         setUploadProgress(100);
+
+        startPolling({ key });
       }}
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (
@@ -105,6 +119,12 @@ const UploadDropzone = () => {
                   />
                 </div>
               ) : null}
+              <input
+                {...getInputProps}
+                type="file"
+                id="dropzone-file"
+                className="hidden"
+              />
             </label>
           </div>
         </div>
