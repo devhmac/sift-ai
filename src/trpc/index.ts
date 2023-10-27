@@ -39,6 +39,23 @@ export const appRouter = router({
     });
   }),
 
+  getFile: privateProcedure
+    .input(z.object({ key: z.string() }))
+    //ctx coming from proceedure middleware which calls user and provides the context, input = body
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx;
+
+      const file = await db.file.findFirst({
+        where: {
+          key: input.key,
+          userId,
+        },
+      });
+
+      if (!file) throw new TRPCError({ code: "NOT_FOUND" });
+      return file;
+    }),
+
   //delete file route ------------------------------
   deleteFile: privateProcedure
     .input(z.object({ id: z.string() })) //this zod function makes the input typesafe

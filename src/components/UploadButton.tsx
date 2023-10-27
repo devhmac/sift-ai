@@ -63,6 +63,7 @@ const UploadDropzone = () => {
           });
         }
 
+        //poll to confirm file upload
         clearInterval(progressInterval);
         setUploadProgress(100);
       }}
