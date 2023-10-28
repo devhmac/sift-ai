@@ -2,7 +2,7 @@
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
-import { ChevronDown, Loader2 } from "lucide-react";
+import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useResizeDetector } from "react-resize-detector";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -34,9 +34,12 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             <Input className="w-12 h-8" />
             <p className="text-zinc-700 text-sm space-x-1">
               <span>/</span>
-              <span>{numPages}</span>
+              <span>{numPages ?? "x"}</span>
             </p>
           </div>
+          <Button aria-label="previous page" variant="ghost">
+            <ChevronUp className="h-4 w-4" />
+          </Button>
         </div>
       </div>
 
