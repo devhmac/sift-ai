@@ -34,6 +34,9 @@ export default function Home() {
         >
           Get Started <ArrowRight className="ml-2 h-5 w-5" />
         </Link>
+        <Link href="/dashboard" className=" flex z-40 font-semibold">
+          .sift-ai
+        </Link>
       </MaxWidthWrapper>
       {/* ad copy/value prop  */}
       <div>
