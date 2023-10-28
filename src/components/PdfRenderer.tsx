@@ -2,25 +2,42 @@
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
-import { Loader2 } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import { useResizeDetector } from "react-resize-detector";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 import { useToast } from "./ui/use-toast";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { useState } from "react";
 
 interface PdfRendererProps {
   url: string;
 }
 
 const PdfRenderer = ({ url }: PdfRendererProps) => {
+  const [numPages, setNumPages] = useState<number>();
+
   const { toast } = useToast();
   const { width, ref } = useResizeDetector();
 
   return (
     <div className="w-full bg-white rounded-md shadow flex flex-col items-center ">
       <div className="h-14 w-full border-b border-zinc-200 items-center justify-between px-2">
-        <div className="flex items-center gap-1.5">top bar</div>
+        <div className="flex items-center gap-1.5">
+          <Button aria-label="previous page" variant="ghost">
+            <ChevronDown className="h-4 w-4" />
+          </Button>
+
+          <div className="flex items-center gap-1.5">
+            <Input className="w-12 h-8" />
+            <p className="text-zinc-700 text-sm space-x-1">
+              <span>/</span>
+              <span>{numPages}</span>
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="flex-1 w-full max-h-screen">
@@ -37,6 +54,9 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
                 description: "Please try again",
                 variant: "destructive",
               });
+            }}
+            onLoadSuccess={({ numPages }) => {
+              setNumPages(numPages);
             }}
             file={url}
             className="max-h-full"
