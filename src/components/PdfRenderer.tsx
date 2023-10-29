@@ -18,6 +18,7 @@ interface PdfRendererProps {
 
 const PdfRenderer = ({ url }: PdfRendererProps) => {
   const [numPages, setNumPages] = useState<number>();
+  const [currPage, setCurrPage] = useState<number>(1);
 
   const { toast } = useToast();
   const { width, ref } = useResizeDetector();
@@ -26,7 +27,16 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
     <div className="w-full bg-white rounded-md shadow flex flex-col items-center ">
       <div className="h-14 w-full border-b border-zinc-200 items-center justify-between px-2">
         <div className="flex items-center gap-1.5">
-          <Button aria-label="previous page" variant="ghost">
+          <Button
+            aria-label="previous page"
+            variant="ghost"
+            disabled={currPage <= 1}
+            onClick={() => {
+              setCurrPage((prev) => {
+                return prev - 1 > 1 ? prev - 1 : 1;
+              });
+            }}
+          >
             <ChevronDown className="h-4 w-4" />
           </Button>
 
@@ -37,7 +47,16 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
               <span>{numPages ?? "x"}</span>
             </p>
           </div>
-          <Button aria-label="previous page" variant="ghost">
+          <Button
+            aria-label="previous page"
+            variant="ghost"
+            disabled={numPages === undefined || currPage >= numPages!}
+            onClick={() => {
+              setCurrPage((prev) => {
+                return prev + 1 > numPages! ? numPages! : prev + 1;
+              });
+            }}
+          >
             <ChevronUp className="h-4 w-4" />
           </Button>
         </div>
@@ -64,7 +83,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             file={url}
             className="max-h-full"
           >
-            <Page width={width ? width : 1} pageNumber={1} />
+            <Page width={width ? width : 1} pageNumber={currPage} />
           </Document>
         </div>
       </div>
