@@ -6,11 +6,18 @@ import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useResizeDetector } from "react-resize-detector";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
+import { cn } from "@/lib/utils";
 import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useState } from "react";
+
+//for defining input page # validation
+import { useForm } from "react-hook-form";
+//used to define valid input schema
+import { z } from "zod";
+//resolver used to link acceptable schema and react form
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface PdfRendererProps {
   url: string;
@@ -19,6 +26,33 @@ interface PdfRendererProps {
 const PdfRenderer = ({ url }: PdfRendererProps) => {
   const [numPages, setNumPages] = useState<number>();
   const [currPage, setCurrPage] = useState<number>(1);
+
+  // confirming valid schema for our page number input - has to be a number between 0 and upper bound
+  const PageValidator = z.object({
+    page: z
+      .string()
+      .refine((input) => Number(input) > 0 && Number(input) <= numPages!),
+  });
+
+  type TPageValidator = z.infer<typeof PageValidator>;
+
+  //input form necessities
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<TPageValidator>({
+    defaultValues: {
+      page: "1",
+    },
+    resolver: zodResolver(PageValidator),
+  });
+
+  const handlePageSubmit = ({ page }: TPageValidator) => {
+    setCurrPage(Number(page));
+    setValue("page", String(page));
+  };
 
   const { toast } = useToast();
   const { width, ref } = useResizeDetector();
@@ -41,7 +75,15 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
           </Button>
 
           <div className="flex items-center gap-1.5">
-            <Input className="w-12 h-8" />
+            <Input
+              {...register("page")}
+              className={(cn("w-12 h-8"), errors.page && "outline-red-500")}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSubmit(handlePageSubmit);
+                }
+              }}
+            />
             <p className="text-zinc-700 text-sm space-x-1">
               <span>/</span>
               <span>{numPages ?? "x"}</span>
