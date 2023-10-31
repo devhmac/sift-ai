@@ -7,6 +7,7 @@ import Providers from "@/components/providers";
 
 import "react-loading-skeleton/dist/skeleton.css";
 import { Toaster } from "@/components/ui/toaster";
+import { GeistSans } from "geist/font";
 
 import "simplebar-react/dist/simplebar.min.css";
 
@@ -26,7 +27,10 @@ export default function RootLayout({
     <html lang="en" className="light">
       <Providers>
         <body
-          className={cn("min-h-screen font-sans antialiased ", inter.className)}
+          className={cn(
+            "min-h-screen font-sans antialiased ",
+            GeistSans.className
+          )}
         >
           <Toaster />
           <Navbar />

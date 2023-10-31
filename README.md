@@ -50,3 +50,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
     - problem, in typescript the type will be "any", not typesafe, dont know what to expect at scale
 
   - planetscale as db provider
+
+  ### Chat Optimistic Updates
+
+  when sending message that needs to hit database, immedately update state before confirming the api route has finished
+
+  ### Infinite Queries - like infinite scroll
+
+  navigate to page with 100 messages, if we dont have this we would render all messages, even those hidden above. Not great because we dont need them rendered. Only load last X messages, then if they scroll up load more.
+
+Why Chat wrapper - handles all loading states, need context from all inputs, layout control
