@@ -9,9 +9,10 @@ import { useResizeDetector } from "react-resize-detector";
 
 interface PdfFullscreenProps {
   fileUrl: string;
+  screenRotation: number;
 }
 
-const PdfFullscreen = ({ fileUrl }: PdfFullscreenProps) => {
+const PdfFullscreen = ({ fileUrl, screenRotation }: PdfFullscreenProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [numPages, setNumPages] = useState<number>();
 
@@ -56,7 +57,12 @@ const PdfFullscreen = ({ fileUrl }: PdfFullscreenProps) => {
             >
               {new Array(numPages).fill(0).map((val, i) => {
                 return (
-                  <Page key={i} width={width ? width : 1} pageNumber={i + 1} />
+                  <Page
+                    key={i}
+                    width={width ? width : 1}
+                    pageNumber={i + 1}
+                    rotate={screenRotation}
+                  />
                 );
               })}
             </Document>
