@@ -5,6 +5,7 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import {
   ChevronDown,
   ChevronUp,
+  Fullscreen,
   Loader2,
   RotateCw,
   Search,
@@ -31,6 +32,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import SimpletBar from "simplebar-react";
+import PdfFullscreen from "./PdfFullscreen";
 
 interface PdfRendererProps {
   url: string;
@@ -149,6 +151,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
           >
             <RotateCw className="h-4 w-4" />
           </Button>
+          <PdfFullscreen fileUrl={url} />
         </div>
       </div>
 
