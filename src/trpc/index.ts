@@ -81,6 +81,22 @@ export const appRouter = router({
       });
       return file;
     }),
+
+  // chat related routes -----------------------
+  getFileUploadStatus: privateProcedure
+    .input(z.object({ fileId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const file = await db.file.findFirst({
+        where: {
+          id: input.fileId,
+          userId: ctx.userId,
+        },
+      });
+      //as const here tells typescript we're looking specificially for the string "PENDING" not just any string
+      if (!file) return { status: "PENDING" as const };
+
+      return { status: file.uploadStatus };
+    }),
 });
 // Export type router type signature,
 // NOT the router itself.
