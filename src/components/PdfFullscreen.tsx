@@ -27,7 +27,7 @@ const PdfFullscreen = ({ fileUrl }: PdfFullscreenProps) => {
         }
       }}
     >
-      <DialogTrigger asChild>
+      <DialogTrigger onClick={() => setIsOpen((prev) => !prev)} asChild>
         <Button variant="ghost" className="gap-1.5">
           <Fullscreen aria-label="expand-fullscreen" className="h-4 w-4" />
         </Button>
