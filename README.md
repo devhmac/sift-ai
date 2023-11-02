@@ -60,3 +60,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
   navigate to page with 100 messages, if we dont have this we would render all messages, even those hidden above. Not great because we dont need them rendered. Only load last X messages, then if they scroll up load more.
 
 Why Chat wrapper - handles all loading states, need context from all inputs, layout control
+
+Learning Prisma notes, once you make local changes need db prisma push,then npx prisma generate
