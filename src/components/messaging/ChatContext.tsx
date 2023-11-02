@@ -5,11 +5,11 @@ import { useMutation } from "@tanstack/react-query";
 type StreamResponse = {
   addMessage: () => void;
   message: string;
-  handleInputCHange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   isLoading: boolean;
 };
 
-export const ChatContext = createContext({
+export const ChatContext = createContext<StreamResponse>({
   addMessage: () => {},
   message: "",
   handleInputChange: () => {},
@@ -23,10 +23,13 @@ interface props {
 
 export const ChatContextProvider = ({ fileId, children }: props) => {
   const [message, setMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { toast } = useToast();
 
   //not using TRPC because we want to stream back the JSON response, TRPC doesnt use json
+
+  //paking post request
   const { mutate: sendMessage } = useMutation({
     mutationFn: async ({ message }: { message: string }) => {
       const response = await fetch("/api/message", {
@@ -43,6 +46,10 @@ export const ChatContextProvider = ({ fileId, children }: props) => {
       return response.body;
     },
   });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
 
   const addMessage = () => sendMessage({ message });
 
