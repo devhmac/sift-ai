@@ -62,3 +62,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 Why Chat wrapper - handles all loading states, need context from all inputs, layout control
 
 Learning Prisma notes, once you make local changes need db prisma push,then npx prisma generate
+
+### semantic query
+
+Every text with AI languange model can be turned into a vector.
+
+need to index and vector PDF
