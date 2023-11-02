@@ -1,5 +1,5 @@
 const Messages = () => {
-  return <div>message</div>;
+  return <div className=" flex justify-center items-end">messages</div>;
 };
 
 export default Messages;

@@ -1,3 +1,5 @@
+import { Send } from "lucide-react";
+import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
 interface ChatInputProps {
@@ -14,7 +16,7 @@ const ChatInput = ({ isDisabled }: ChatInputProps) => {
       >
         <div className="relative flex h-full flex-1 items-stretch md:flex-col">
           <div className="relative flex flex-col w-full flex-grow p-4">
-            <div className="relative ">
+            <div className="relative">
               <Textarea
                 autoFocus
                 rows={1}
@@ -22,6 +24,12 @@ const ChatInput = ({ isDisabled }: ChatInputProps) => {
                 placeholder="Your Chat Here"
                 className="resize-none pr-12 text-base py-3 scrollbar-thumb-green scrollbar-thumb-rounded scrollbar-track-green-lighter scrollbar-w-2 scrolling-touch"
               />
+              <Button
+                className="absolute bottom-1.5 right-[8px]"
+                aria-label="send message"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </div>
