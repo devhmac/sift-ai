@@ -3,6 +3,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { pinecone } from "@/lib/pinecone";
+import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 
 const f = createUploadthing();
@@ -27,7 +28,7 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const createFile = await db.file.create({
+      const createdFile = await db.file.create({
         data: {
           key: file.key,
           name: file.name,
@@ -54,6 +55,19 @@ export const ourFileRouter = {
         //used to generate vectors from the text - openAI api llm embeddings generator
         const embeddings = new OpenAIEmbeddings({
           openAIApiKey: process.env.OPENAI_API_KEY!,
+        });
+
+        await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
+          pineconeIndex,
+          //this associates the vectors to the file level
+          namespace: createdFile.id,
+        });
+
+        await db.file.update({
+          where: {
+            id: createdFile.id,
+          },
+          data: { uploadStatus: "SUCCESS" },
         });
       } catch (error) {}
     }),
