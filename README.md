@@ -68,3 +68,6 @@ Learning Prisma notes, once you make local changes need db prisma push,then npx 
 Every text with AI languange model can be turned into a vector.
 
 need to index and vector PDF
+Vector DB Dimension is 1536 > Which is OPENAI's vector standard
+
+### Langchain
