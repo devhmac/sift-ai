@@ -72,4 +72,5 @@ Vector DB Dimension is 1536 > Which is OPENAI's vector standard
 
 ### Langchain
 
-does a ton of the lifting for hooking up document text to embeddings and gets it stored in a db
+- pdf-parse dependency for our usecase
+  does a ton of the lifting for hooking up document text to embeddings and gets it stored in a db

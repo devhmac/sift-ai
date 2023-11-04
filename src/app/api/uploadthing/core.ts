@@ -50,19 +50,19 @@ export const ourFileRouter = {
         const pagesAmount = pageLevelDocs.length;
 
         //vectorize & index document
-
+        console.log("creating pinecone");
         const pineconeIndex = pinecone.index("sift-ai");
         //used to generate vectors from the text - openAI api llm embeddings generator
         const embeddings = new OpenAIEmbeddings({
           openAIApiKey: process.env.OPENAI_API_KEY!,
         });
-
+        console.log("logging embeddings");
         await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
           pineconeIndex,
           //this associates the vectors to the file level
           namespace: createdFile.id,
         });
-
+        console.log("confirming file upload");
         await db.file.update({
           where: {
             id: createdFile.id,
