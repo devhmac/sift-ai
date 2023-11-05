@@ -5,6 +5,7 @@ import { publicProcedure, privateProcedure, router } from "./trpc";
 import { TRPCError } from "@trpc/server";
 import { db } from "@/db";
 import { z } from "zod";
+import { INFINITE_QUERY_LIMIT } from "@/app/config/infinite-query";
 
 export const appRouter = router({
   //can do querys (generally get requests etc) and mutations (posts etc)
@@ -106,7 +107,39 @@ export const appRouter = router({
         fileId: z.string(),
       })
     )
-    .query(({ ctx, input }) => {}),
+    .query(async ({ ctx, input }) => {
+      //limit is num messages we want
+      //cursor is where we're at in the messages so we dont query the same ones over again
+
+      const limit = input.limit ?? INFINITE_QUERY_LIMIT;
+
+      const file = await db.file.findFirst({
+        where: {
+          id: input.fileId,
+          userId: ctx.userId,
+        },
+      });
+
+      if (!file) throw new TRPCError({ code: "NOT_FOUND" });
+
+      const messages = await db.message.findMany({
+        take: limit + 1,
+        where: {
+          userId: ctx.userId,
+          fileId: input.fileId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        cursor: input.cursor ? { id: input.cursor } : undefined,
+        select: {
+          id: true,
+          isUserMessage: true,
+          createdAt: true,
+          text: true,
+        },
+      });
+    }),
 });
 // Export type router type signature,
 // NOT the router itself.
