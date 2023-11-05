@@ -1,6 +1,8 @@
 import { trpc } from "@/app/_trpc/client";
 import { INFINITE_QUERY_LIMIT } from "@/app/config/infinite-query";
-import { Loader2 } from "lucide-react";
+import { Loader2, MessageSquare } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
+import Message from "./Message";
 
 interface MessagesProps {
   fileId: string;
@@ -45,15 +47,28 @@ const Messages = ({ fileId }: MessagesProps) => {
             combinedMessages[i]?.isUserMessage;
 
           if (i === combinedMessages.length - 1) {
-            return <Message />;
+            return (
+              <Message key={i} message={message} isNextMessageSamePerson />
+            );
           } else {
             <Message />;
           }
         })
       ) : isLoading ? (
-        <div></div>
+        <div className="w-full flex flex-col gap-2">
+          <Skeleton className="h-16" />
+          <Skeleton className="h-16" />
+          <Skeleton className="h-16" />
+          <Skeleton className="h-16" />
+        </div>
       ) : (
-        <div></div>
+        <div className="flex-1 flex flex-col items-center justify-center gap-2">
+          <MessageSquare className="h-8 w-8 text-green-600" />
+          <h3 className="font-semibold text-xl">We&apos;re All Set.</h3>
+          <p className="text-zinc-500 text-sm">
+            Get started by asking a question
+          </p>
+        </div>
       )}
     </div>
   );
