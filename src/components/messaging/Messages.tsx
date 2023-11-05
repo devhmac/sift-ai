@@ -22,6 +22,7 @@ const Messages = ({ fileId }: MessagesProps) => {
     );
 
   const messages = data?.pages.flatMap((page) => page.messages);
+
   const loadingMessage = {
     createdAt: new Date().toISOString(),
     id: "loading_message",
@@ -48,10 +49,20 @@ const Messages = ({ fileId }: MessagesProps) => {
 
           if (i === combinedMessages.length - 1) {
             return (
-              <Message key={i} message={message} isNextMessageSamePerson />
+              <Message
+                key={message.id}
+                message={message}
+                isNextMessageSamePerson={isNextMessageSamePerson}
+              />
             );
           } else {
-            <Message />;
+            return (
+              <Message
+                key={message.id}
+                message={message}
+                isNextMessageSamePerson={isNextMessageSamePerson}
+              />
+            );
           }
         })
       ) : isLoading ? (
