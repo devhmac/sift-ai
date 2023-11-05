@@ -139,6 +139,17 @@ export const appRouter = router({
           text: true,
         },
       });
+
+      let nextCursor: typeof input.cursor | undefined = undefined;
+      //grab the id of the last message which will be used as the cursor start for the next query
+      if (messages.length > limit) {
+        const nextItem = messages.pop();
+        nextCursor = nextItem?.id;
+      }
+      return {
+        messages,
+        nextCursor,
+      };
     }),
 });
 // Export type router type signature,
