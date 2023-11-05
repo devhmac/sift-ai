@@ -55,7 +55,7 @@ export const ChatContextProvider = ({ fileId, children }: props) => {
 
   return (
     <ChatContext.Provider
-      value={{ addMessage, message, handleInputChange, isLoaded }}
+      value={{ addMessage, message, handleInputChange, isLoading }}
     >
       {children}
     </ChatContext.Provider>

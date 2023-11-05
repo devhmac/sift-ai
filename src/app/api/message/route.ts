@@ -8,6 +8,7 @@ import { PineconeStore } from "langchain/vectorstores/pinecone";
 // import OpenAI from "openai";
 import { openai } from "@/lib/openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
+import { ChatContext } from "@/components/messaging/ChatContext";
 
 export const POST = async (req: NextRequest) => {
   //message ask question endpoint
