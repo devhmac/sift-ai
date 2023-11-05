@@ -97,6 +97,14 @@ export const appRouter = router({
 
       return { status: file.uploadStatus };
     }),
+
+  getFileMessages: privateProceedure.input(
+    z.object({
+      limit: z.number().min(1).max(100).nullish(),
+      cursor: z.string.nullish(),
+      fileId: z.string(),
+    })
+  ),
 });
 // Export type router type signature,
 // NOT the router itself.

@@ -1,5 +1,7 @@
 const Messages = () => {
-  return <div className=" flex justify-center items-end">messages</div>;
+  const {} = trpc;
+
+  return <div className=" flex justify-center items-end"></div>;
 };
 
 export default Messages;
