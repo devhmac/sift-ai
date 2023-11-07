@@ -50,7 +50,7 @@ export const ChatContextProvider = ({ fileId, children }: props) => {
 
       return response.body;
     },
-    onMutate: async () => {
+    onMutate: async ({ message }) => {
       //saving current message so we have it in case upload failure
       backupMessage.current = message;
       setMessage("");
@@ -87,9 +87,33 @@ export const ChatContextProvider = ({ fileId, children }: props) => {
               text: message,
               isUserMessage: true,
             },
+            ...latestPage.messages,
           ];
+          newPages[0] = latestPage;
+          return {
+            ...old,
+            pages: newPages,
+          };
         }
       );
+      setIsLoading(true);
+      return {
+        previousMessages:
+          previousMessages?.pages.flatMap((page) => page.messages) ?? [],
+      };
+    },
+    onError: (_, __, context) => {
+      setMessage(backupMessage.current);
+      utils.getFileMessages.setData(
+        { fileId },
+        { messages: context?.previousMessages ?? [] }
+      );
+    },
+    onSettled: async () => {
+      setIsLoading(false);
+
+      // invalidate file state so it will refresh all messages
+      await utils.getFileMessages.invalidate({ fileId });
     },
   });
 
