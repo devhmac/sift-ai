@@ -102,6 +102,34 @@ export const ChatContextProvider = ({ fileId, children }: props) => {
           previousMessages?.pages.flatMap((page) => page.messages) ?? [],
       };
     },
+    onSuccess: async (stream) => {
+      // this will contain a readable stream from the api
+      setIsLoading(false);
+      if (!stream) {
+        return toast({
+          title: "There was a Problem sending your message",
+          description: "Please reload the page and try again",
+          variant: "destructive",
+        });
+      }
+
+      const streamReader = stream.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+
+      // need an accumulated response
+      let accResponse = "";
+
+      while (!done) {
+        const { value, done: doneReading } = await streamReader.read();
+        done = doneReading;
+        const chunk = decoder.decode(value);
+
+        accResponse += chunk;
+
+        // need to add chunk to the actual chat message state
+      }
+    },
     onError: (_, __, context) => {
       setMessage(backupMessage.current);
       utils.getFileMessages.setData(
