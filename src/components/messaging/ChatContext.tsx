@@ -157,14 +157,21 @@ export const ChatContextProvider = ({ fileId, children }: props) => {
                   } else {
                     //ai response already exists
                     updatedMessages = page.messages.map((message) => {
-                      if (message.id === "ai-response")
+                      if (message.id === "ai-response") {
                         return {
                           ...message,
                           text: accResponse,
                         };
+                      }
+                      return message;
                     });
                   }
+                  return {
+                    ...page,
+                    messages: updatedMessages,
+                  };
                 }
+                return page;
               });
             });
           }
