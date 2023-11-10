@@ -3,6 +3,7 @@ import { useToast } from "../ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { trpc } from "@/app/_trpc/client";
 import { INFINITE_QUERY_LIMIT } from "@/app/config/infinite-query";
+import { DatabaseIcon } from "lucide-react";
 
 type StreamResponse = {
   addMessage: () => void;
@@ -128,6 +129,46 @@ export const ChatContextProvider = ({ fileId, children }: props) => {
         accResponse += chunk;
 
         // need to add chunk to the actual chat message state
+        utils.getFileMessages.setInfiniteData(
+          {
+            fileId,
+            limit: INFINITE_QUERY_LIMIT,
+          },
+          (old) => {
+            if (!old) return { pages: [], pageParams: [] };
+            let isAiResponseCreated = old.pages.some((page) => {
+              page.messages.some((message) => {
+                message.id === "ai-response";
+              });
+              let updatedPages = old.pages.map((page) => {
+                if (page === old.pages[0]) {
+                  let updatedMessages;
+                  if (!isAiResponseCreated) {
+                    // no response exists yet, creating new message object with AI response with chunked response piping into first position
+                    updatedMessages = [
+                      {
+                        createdAt: new Date().toISOString(),
+                        id: "ai-response",
+                        text: accResponse,
+                        isUserMessage: false,
+                      },
+                      ...page.messages,
+                    ];
+                  } else {
+                    //ai response already exists
+                    updatedMessages = page.messages.map((message) => {
+                      if (message.id === "ai-response")
+                        return {
+                          ...message,
+                          text: accResponse,
+                        };
+                    });
+                  }
+                }
+              });
+            });
+          }
+        );
       }
     },
     onError: (_, __, context) => {
