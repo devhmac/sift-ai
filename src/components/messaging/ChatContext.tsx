@@ -136,44 +136,47 @@ export const ChatContextProvider = ({ fileId, children }: props) => {
           },
           (old) => {
             if (!old) return { pages: [], pageParams: [] };
+
             let isAiResponseCreated = old.pages.some((page) => {
               page.messages.some((message) => {
                 message.id === "ai-response";
               });
-              let updatedPages = old.pages.map((page) => {
-                if (page === old.pages[0]) {
-                  let updatedMessages;
-                  if (!isAiResponseCreated) {
-                    // no response exists yet, creating new message object with AI response with chunked response piping into first position
-                    updatedMessages = [
-                      {
-                        createdAt: new Date().toISOString(),
-                        id: "ai-response",
-                        text: accResponse,
-                        isUserMessage: false,
-                      },
-                      ...page.messages,
-                    ];
-                  } else {
-                    //ai response already exists
-                    updatedMessages = page.messages.map((message) => {
-                      if (message.id === "ai-response") {
-                        return {
-                          ...message,
-                          text: accResponse,
-                        };
-                      }
-                      return message;
-                    });
-                  }
-                  return {
-                    ...page,
-                    messages: updatedMessages,
-                  };
-                }
-                return page;
-              });
             });
+
+            let updatedPages = old.pages.map((page) => {
+              if (page === old.pages[0]) {
+                let updatedMessages;
+                if (!isAiResponseCreated) {
+                  // no response exists yet, creating new message object with AI response with chunked response piping into first position
+                  updatedMessages = [
+                    {
+                      createdAt: new Date().toISOString(),
+                      id: "ai-response",
+                      text: accResponse,
+                      isUserMessage: false,
+                    },
+                    ...page.messages,
+                  ];
+                } else {
+                  //ai response already exists
+                  updatedMessages = page.messages.map((message) => {
+                    if (message.id === "ai-response") {
+                      return {
+                        ...message,
+                        text: accResponse,
+                      };
+                    }
+                    return message;
+                  });
+                }
+                return {
+                  ...page,
+                  messages: updatedMessages,
+                };
+              }
+              return page;
+            });
+            return { ...old, pages: updatedPages };
           }
         );
       }
