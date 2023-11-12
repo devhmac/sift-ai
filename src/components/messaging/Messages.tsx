@@ -4,7 +4,8 @@ import { Loader2, MessageSquare } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import Message from "./Message";
 import { ChatContext } from "./ChatContext";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
+import { useIntersection } from "@mantine/hooks";
 
 interface MessagesProps {
   fileId: string;
@@ -43,6 +44,8 @@ const Messages = ({ fileId }: MessagesProps) => {
     ...(messages ?? []),
   ];
 
+  const lastMessageRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className=" flex max-h-[calc(100vh-3.5rem-7rem)] border-zinc-200 flex-1 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-rounded scrollbar-thumb-green scrollbar-track-green-lighter scrollbar-w-2 scrolling-touch">
       {combinedMessages && combinedMessages.length > 0 ? (
@@ -54,6 +57,7 @@ const Messages = ({ fileId }: MessagesProps) => {
           if (i === combinedMessages.length - 1) {
             return (
               <Message
+                ref={lastMessageRef}
                 key={message.id}
                 message={message}
                 isNextMessageSamePerson={isNextMessageSamePerson}
