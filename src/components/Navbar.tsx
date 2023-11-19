@@ -4,6 +4,7 @@ import { buttonVariants } from "./ui/button";
 import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ArrowRightCircle, Divide } from "lucide-react";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { cn } from "@/lib/utils";
 
 const Navbar = () => {
   const { getUser } = getKindeServerSession();
@@ -29,9 +30,15 @@ const Navbar = () => {
                 Pricing
               </Link>
               {loggedIn ? (
-                <div className="text-sm flex-center justify-cente align-center">
+                <Link
+                  href="/dashboard"
+                  className={cn(
+                    "text-sm flex-center justify-cente align-center",
+                    buttonVariants({ variant: "ghost" })
+                  )}
+                >
                   Welcome {user.email}
-                </div>
+                </Link>
               ) : (
                 <>
                   <LoginLink
