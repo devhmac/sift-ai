@@ -27,7 +27,7 @@ const Navbar = () => {
                   size: "sm",
                 })}
               >
-                Pricing
+                {/* Pricing */}
               </Link>
               {loggedIn ? (
                 <Link
