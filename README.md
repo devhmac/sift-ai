@@ -39,7 +39,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ---
 
-![sift-ai-landing](https://github.com/devhmac/scheduler/assets/52307383/ab9f8d46-eec1-4dd3-ad61-1670e4453564)
+![sift-ai-landing](public/readmeGifs/sift-ai-landing.gif)
 
 ### Infinite Messages Rendering
 
