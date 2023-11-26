@@ -41,6 +41,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ![sift-ai-landing](public/readmeGifs/sift-ai-landing.gif)
 
+### Streamed AI responses
+
+---
+
+![Infinite Scroll](/public/readmeGifs/ai-response.gif)
+
 ### Infinite Messages Rendering
 
 ---
