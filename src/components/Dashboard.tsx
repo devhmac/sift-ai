@@ -1,5 +1,12 @@
 "use client";
-import { Ghost, Loader2, MessageSquare, Plus, TrashIcon } from "lucide-react";
+import {
+  Ghost,
+  Loader2,
+  MessageSquare,
+  Plus,
+  TrashIcon,
+  ScrollText,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import UploadButton from "./UploadButton";
 import { trpc } from "@/app/_trpc/client";
@@ -57,7 +64,8 @@ const Dashboard = () => {
                   className="flex flex-col gap-2"
                 >
                   <div className="pt-6 px-6 flex w-full items-center justify-between space-x-6">
-                    <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gradient-to-r from-lime-500 to-green-600" />
+                    <ScrollText />
+                    {/* <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gradient-to-r from-lime-500 to-green-600" /> */}
                     <div className="flex-1 truncate">
                       <div className="flex items-center space-x-3">
                         <h3 className="truncate text-lg font-medium text-zinc-900">
@@ -74,7 +82,6 @@ const Dashboard = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <MessageSquare className="h-4 w-4" />
-                    num messages
                   </div>
                   <Button
                     size="sm"
