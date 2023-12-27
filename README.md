@@ -1,6 +1,6 @@
 <div align="center">
 
-# Sift-AI.
+# .Sift-AI
 
 ### A Full-Stack AI powered document reader
 
