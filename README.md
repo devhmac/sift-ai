@@ -72,8 +72,6 @@ AI responses can be slow to complete. Instead of waiting for the full response t
 
 Your document conversations can be lengthy. Instead of rendering every single message when a document page is openned, only the first 10 messages and queried. Using a rolling limit, as you scroll up your chat window, previous messages are automatically rendered in as needed. Seamlessly increasing performance without interruping user needs.
 
-navigate to page with 100 messages, if we dont have this we would render all messages, even those hidden above. Not great because we dont need them rendered. Only load last X messages, then if they scroll up load more.
-
 ### Authentication
 
 Utilizing Kinde Auth for full Sign-in/sign-up account creating. Keeping your documents private and secure.
