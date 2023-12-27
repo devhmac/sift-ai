@@ -45,13 +45,15 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ---
 
-![Infinite Scroll](/public/readmeGifs/ai-response.gif)
+![Streamed AI Response](/public/readmeGifs/ai-response.gif)
 
 ### Infinite Messages Rendering
 
 ---
 
 ![Infinite Scroll](/public/readmeGifs/infinite-message-queries.gif)
+
+![Dashboard](https://media.giphy.com/media/cwBr1mnZDQBht7NhiV/giphy.gif)
 
 # Tech Stack
 
