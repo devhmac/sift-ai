@@ -1,39 +1,36 @@
-<!-- This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
 
-## Getting Started
+# Sift-AI.
 
-First, run the development server:
+### A Full-Stack AI powered document reader
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Allowing Artificial inteligence to extract information and insights from uploaded PDF documents in real-time, based on your questions and converstaion.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+</div>
+<br>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### FrontEnd
 
-## Learn More
+- Typescript
+- NextJS
+- Tailwindcss
+- Shadcn
 
-<!-- To learn more about Next.js, take a look at the following resources: -->
-<!--
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Backend
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Planetscale PostGres Database
+- Pinecone DB Vector Database
+- Prisma ORM
+- Tanstack & tRPC
+- LangChain - parsing and enabling the vectorization of your document for LLM Context
 
-## Deploy on Vercel
+### APIs and Helpers
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details. -->
+- Kinde Authentication
+- OPENAI - GPT
+- Uploadthing - AWS S3 document upload abstraction layer
 
 ### Landing Page
 
@@ -47,51 +44,68 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ![Streamed AI Response](/public/readmeGifs/ai-response.gif)
 
-### Infinite Messages Rendering
-
 ---
 
-![Infinite Scroll](/public/readmeGifs/infinite-message-queries.gif)
+|                Upload PDF's                 |        Manage, view and delete files        |
+| :-----------------------------------------: | :-----------------------------------------: |
+| ![Dashboard](/public/readmeGifs/Upload.gif) | ![upload](/public/readmeGifs/dashboard.gif) |
 
-![Dashboard](https://media.giphy.com/media/cwBr1mnZDQBht7NhiV/giphy.gif)
+|             PDF reader functionality             |                     Infinite message rendering                      |
+| :----------------------------------------------: | :-----------------------------------------------------------------: |
+| ![PDF](/public/readmeGifs/pdf-functionality.gif) | ![Infinite Scroll](/public/readmeGifs/infinite-message-queries.gif) |
 
-# Tech Stack
+## Techniques and Notables
 
-- Typescript
-- NextJS
-- Tailwindcss
-- Shadcn
-  -tRPC -- wrapper over tanstack
+### NextJS Server Components
 
-  Planetscale Database
-  prisma - database wrapper
+Experimenting with NextJS server components and routes.
 
-  - reg nextjs front and back split, fetch from front end sends request to backend, which will process, then send it back to us
+### Optimistic Chat Updates
 
-    - problem, in typescript the type will be "any", not typesafe, dont know what to expect at scale
+Update state immediately upon a message being sent for maxium responsiveness and user experience. If there is an error in the message endpoint, or a failure loging to the db, rollback the state, saving the initial message condition so the user can immediately try again.
 
-  - planetscale as db provider
+### Streamed AI Responses
 
-  ### Chat Optimistic Updates
+AI responses can be slow to complete. Instead of waiting for the full response to finish, it is streamed into the application in real time as it is being generated.
 
-  when sending message that needs to hit database, immedately update state before confirming the api route has finished
+### Infinite Message Rendering
 
-  ### Infinite Queries - like infinite scroll
+Your document conversations can be lengthy. Instead of rendering every single message when a document page is openned, only the first 10 messages and queried. Using a rolling limit, as you scroll up your chat window, previous messages are automatically rendered in as needed. Seamlessly increasing performance without interruping user needs.
 
-  navigate to page with 100 messages, if we dont have this we would render all messages, even those hidden above. Not great because we dont need them rendered. Only load last X messages, then if they scroll up load more.
+navigate to page with 100 messages, if we dont have this we would render all messages, even those hidden above. Not great because we dont need them rendered. Only load last X messages, then if they scroll up load more.
 
-Why Chat wrapper - handles all loading states, need context from all inputs, layout control
+### Authentication
 
-Learning Prisma notes, once you make local changes need db prisma push,then npx prisma generate
+Utilizing Kinde Auth for full Sign-in/sign-up account creating. Keeping your documents private and secure.
 
-### semantic query
+## Try It out yourself
 
-Every text with AI languange model can be turned into a vector.
+First clone the git repo locally
 
-need to index and vector PDF
-Vector DB Dimension is 1536 > Which is OPENAI's vector standard
+```bash
+git clone git@github.com:devhmac/sift-ai.git
+```
 
-### Langchain
+Install Dependencies
 
-- pdf-parse dependency for our usecase
-  does a ton of the lifting for hooking up document text to embeddings and gets it stored in a db
+```bash
+npm install
+```
+
+Environment Variables
+
+- Refer to the exampleenv for required API and Library keys
+
+Run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser
