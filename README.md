@@ -29,7 +29,7 @@ Allowing Artificial inteligence to extract information and insights from uploade
 ### APIs and Helpers
 
 - Kinde Authentication
-- OPENAI - GPT
+- OpenAI: GPT-3 LLM
 - Uploadthing - AWS S3 document upload abstraction layer
 
 ### Landing Page
