@@ -2,7 +2,7 @@
 
 # .Sift-AI
 
-### A Full-Stack AI powered document reader
+### A Full-Stack AI Powered Document Interpreter
 
 Allowing Artificial inteligence to extract information and insights from uploaded PDF documents in real-time, based on your questions and converstaion.
 
